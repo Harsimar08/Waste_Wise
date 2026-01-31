@@ -5,7 +5,12 @@ import sys
 # Ensure project root is on path in case templates/static are referenced
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
-app = Flask(__name__)
+# Ensure Flask knows where to find templates/static when running from api/ (e.g. Vercel)
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+template_dir = os.path.join(project_root, 'templates')
+static_dir = os.path.join(project_root, 'static')
+# Ensure Flask's static URL path matches where Vercel will serve static files
+app = Flask(__name__, template_folder=template_dir, static_folder=static_dir, static_url_path='/static')
 
 reuse_suggestions = {
     'plastic': [
